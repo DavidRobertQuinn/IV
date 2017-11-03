@@ -6,7 +6,7 @@ setup(
     name="IV",
     version="0.1",
     packages=find_packages(),
-    scripts=['data_extractor.py','lightIV.py'],
+    scripts=['IV/data_extractor.py','IV/lightIV.py'],
     author="David Quinn",
     author_email="davidrobertquinn@gmail.com",
     description="Laser Power Transfer Analysis",
