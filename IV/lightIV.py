@@ -2,7 +2,7 @@
 from itertools import zip_longest
 import os
 import matplotlib.pyplot as plt
-# from data_extractor.py import saveTikzPng, colors
+import IV.data_extractor
 import matplotlib
 from matplotlib2tikz import save as tikz_save
 plt.style.use('thesis_full_width')
@@ -11,31 +11,32 @@ for color in matplotlib.rcParams['axes.prop_cycle']:
     colors = colors + list(color.values())
 
 
-def saveTikzPng(filename, watermark=None, thesis = False, show=False):
-    if watermark is not None:
-        plt.gcf().text(0.125, 0.9, watermark, fontsize=8)
-    filename_png = filename + '.png'
-    filename_pdf = filename + '.pdf'
-    plt.gcf()
-    plt.plot()
-    d = os.getcwd()
-    figure_folder = os.path.join(d, 'figures')
-    tex_folder = os.path.join(d, 'tex')
-    if not os.path.exists(tex_folder):
-        os.makedirs(tex_folder)
-    if not os.path.exists(figure_folder):
-        os.makedirs(figure_folder)
-    tikz_save(
-        tex_folder +"/"+filename + '.tex',
-        figureheight='\\figureheight',
-        figurewidth='\\figurewidth'
-    )
-    if thesis == False:
-        plt.savefig(figure_folder+"/"+filename_png, format='png', dpi=600, bbox_inches='tight')
-    else:
-        plt.savefig(figure_folder+"/"+filename_pdf, format='pdf', dpi=600, bbox_inches='tight')
-    if show == True:
-        plt.show()
+
+# def saveTikzPng(filename, watermark=None, thesis = False, show=False):
+#     if watermark is not None:
+#         plt.gcf().text(0.125, 0.9, watermark, fontsize=8)
+#     filename_png = filename + '.png'
+#     filename_pdf = filename + '.pdf'
+#     plt.gcf()
+#     plt.plot()
+#     d = os.getcwd()
+#     figure_folder = os.path.join(d, 'figures')
+#     tex_folder = os.path.join(d, 'tex')
+#     if not os.path.exists(tex_folder):
+#         os.makedirs(tex_folder)
+#     if not os.path.exists(figure_folder):
+#         os.makedirs(figure_folder)
+#     tikz_save(
+#         tex_folder +"/"+filename + '.tex',
+#         figureheight='\\figureheight',
+#         figurewidth='\\figurewidth'
+#     )
+#     if thesis == False:
+#         plt.savefig(figure_folder+"/"+filename_png, format='png', dpi=600, bbox_inches='tight')
+#     else:
+#         plt.savefig(figure_folder+"/"+filename_pdf, format='pdf', dpi=600, bbox_inches='tight')
+#     if show == True:
+#         plt.show()
 
 
 def drop_dark_data(df):
@@ -67,7 +68,7 @@ def plot_scatter(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=No
     ax.set_xlim(xlims)
     ax.set_ylim(ylims)
     if save_name:
-        saveTikzPng(save_name, watermark)
+        IV.data_extractor.saveTikzPng(save_name, watermark)
 
 
 def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None, labels=None, xlims=None, ylims=None, save_name=None, watermark=None):
@@ -97,7 +98,7 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
     if log_y:
         ax.set_yscale('log')
     if save_name:
-        saveTikzPng(save_name, watermark=watermark)
+        IV.data_extractor.saveTikzPng(save_name, watermark=watermark)
 
 
 def full_analysis(*dfs, labels=["df1", "df2"],  watermark=None, base_save_name=None):
