@@ -2,7 +2,7 @@
 from itertools import zip_longest
 
 import matplotlib.pyplot as plt
-import data_extractor
+from data_extractor import saveTikzPng, colors
 
 plt.style.use('thesis_full_width')
 
@@ -36,7 +36,7 @@ def plot_scatter(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=No
     ax.set_xlim(xlims)
     ax.set_ylim(ylims)
     if save_name:
-        data_extractor.saveTikzPng(save_name, watermark)
+        saveTikzPng(save_name, watermark)
 
 
 def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None, labels=None, xlims=None, ylims=None, save_name=None, watermark=None):
@@ -50,12 +50,12 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
         isc_min_list.append(min(df.Isc))
         jsc_min_list.append(min(df.Jsc))
         for index, row in df.iterrows():
-            plt.plot(row[x], row[y], color=data_extractor.colors[count])
+            plt.plot(row[x], row[y], color=colors[count])
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     if labels:
         for count, label in enumerate(labels):
-            plt.plot([], [], data_extractor.colors[count], label=label)
+            plt.plot([], [], colors[count], label=label)
         ax.legend()
     ax.set_xlim(0, 1.4)
     ax.set_ylim(min(isc_min_list) * 1.1, -0.2 * min(isc_min_list))
@@ -66,7 +66,7 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
     if log_y:
         ax.set_yscale('log')
     if save_name:
-        data_extractor.saveTikzPng(save_name, watermark=watermark)
+        saveTikzPng(save_name, watermark=watermark)
 
 
 def full_analysis(*dfs, labels=["df1", "df2"],  watermark=None, base_save_name=None):
