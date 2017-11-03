@@ -6,37 +6,9 @@ import IV.data_extractor
 import matplotlib
 from matplotlib2tikz import save as tikz_save
 plt.style.use('thesis_full_width')
-colors = []
-for color in matplotlib.rcParams['axes.prop_cycle']:
-    colors = colors + list(color.values())
-
-
-
-# def saveTikzPng(filename, watermark=None, thesis = False, show=False):
-#     if watermark is not None:
-#         plt.gcf().text(0.125, 0.9, watermark, fontsize=8)
-#     filename_png = filename + '.png'
-#     filename_pdf = filename + '.pdf'
-#     plt.gcf()
-#     plt.plot()
-#     d = os.getcwd()
-#     figure_folder = os.path.join(d, 'figures')
-#     tex_folder = os.path.join(d, 'tex')
-#     if not os.path.exists(tex_folder):
-#         os.makedirs(tex_folder)
-#     if not os.path.exists(figure_folder):
-#         os.makedirs(figure_folder)
-#     tikz_save(
-#         tex_folder +"/"+filename + '.tex',
-#         figureheight='\\figureheight',
-#         figurewidth='\\figurewidth'
-#     )
-#     if thesis == False:
-#         plt.savefig(figure_folder+"/"+filename_png, format='png', dpi=600, bbox_inches='tight')
-#     else:
-#         plt.savefig(figure_folder+"/"+filename_pdf, format='pdf', dpi=600, bbox_inches='tight')
-#     if show == True:
-#         plt.show()
+# colors = []
+# for color in matplotlib.rcParams['axes.prop_cycle']:
+#     colors = colors + list(color.values())
 
 
 def drop_dark_data(df):
@@ -82,12 +54,12 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
         isc_min_list.append(min(df.Isc))
         jsc_min_list.append(min(df.Jsc))
         for index, row in df.iterrows():
-            plt.plot(row[x], row[y], color=colors[count])
+            plt.plot(row[x], row[y], color=IV.data_extractor.colors[count])
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     if labels:
         for count, label in enumerate(labels):
-            plt.plot([], [], colors[count], label=label)
+            plt.plot([], [], IV.data_extractor.colors[count], label=label)
         ax.legend()
     ax.set_xlim(0, 1.4)
     ax.set_ylim(min(isc_min_list) * 1.1, -0.2 * min(isc_min_list))
