@@ -30,7 +30,9 @@ for color in mpl.rcParams['axes.prop_cycle']:
 def create_PV_dataframe(pkl_name,epi,filepath='DEFAULT',delimeter = ',',light=False,  dev_loc= "on_chip"):
     """Create dataframe of measurements in a filepath. If light measurements then light = True.
      Requires name of pickle to be defined and the epistructure"""
-    if not os.path.isfile(pkl_name):
+    here =os.getcwd()
+    data_folder = os.path.join(here, 'data')
+    if not os.path.isfile(os.path.join(data_folder, pkl_name)):
         if filepath =='DEFAULT':
             root = Tk()
             root.update()
@@ -51,13 +53,15 @@ def create_PV_dataframe(pkl_name,epi,filepath='DEFAULT',delimeter = ',',light=Fa
                 logging.warning(traceback.print_exc())
                 logging.warning("Error in dataframe with file {} in {} ".format(file, os.getcwd()))
                 pass
-
+        if not os.path.exists(data_folder):
+            os.makedirs(data_folder)
         master_df = pd.concat(list_of_measurements_dfs)
-        master_df.to_pickle(filepath+pkl_name)
-        master_df.to_csv(filepath+pkl_name[:-4] + ".csv" )
+        
+        master_df.to_pickle(filepath+r"/data/"+pkl_name)
+        master_df.to_csv(filepath+r"/data/"+pkl_name[:-4] + ".csv" )
         return master_df
     else:
-        return pd.read_pickle(pkl_name)
+        return pd.read_pickle(os.path.join(data_folder, pkl_name))
 
 def saveTikzPng(filename, watermark=None, thesis = False, show=False):
     if watermark is not None:

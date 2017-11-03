@@ -1,10 +1,41 @@
 #! /usr/bin/env python
 from itertools import zip_longest
-
+import os
 import matplotlib.pyplot as plt
-from data_extractor import saveTikzPng, colors
-
+# from data_extractor.py import saveTikzPng, colors
+import matplotlib
+from matplotlib2tikz import save as tikz_save
 plt.style.use('thesis_full_width')
+colors = []
+for color in matplotlib.rcParams['axes.prop_cycle']:
+    colors = colors + list(color.values())
+
+
+def saveTikzPng(filename, watermark=None, thesis = False, show=False):
+    if watermark is not None:
+        plt.gcf().text(0.125, 0.9, watermark, fontsize=8)
+    filename_png = filename + '.png'
+    filename_pdf = filename + '.pdf'
+    plt.gcf()
+    plt.plot()
+    d = os.getcwd()
+    figure_folder = os.path.join(d, 'figures')
+    tex_folder = os.path.join(d, 'tex')
+    if not os.path.exists(tex_folder):
+        os.makedirs(tex_folder)
+    if not os.path.exists(figure_folder):
+        os.makedirs(figure_folder)
+    tikz_save(
+        tex_folder +"/"+filename + '.tex',
+        figureheight='\\figureheight',
+        figurewidth='\\figurewidth'
+    )
+    if thesis == False:
+        plt.savefig(figure_folder+"/"+filename_png, format='png', dpi=600, bbox_inches='tight')
+    else:
+        plt.savefig(figure_folder+"/"+filename_pdf, format='pdf', dpi=600, bbox_inches='tight')
+    if show == True:
+        plt.show()
 
 
 def drop_dark_data(df):
@@ -84,12 +115,12 @@ def full_analysis(*dfs, labels=["df1", "df2"],  watermark=None, base_save_name=N
                      *updated_dfs, labels=labels, save_name="eta_suns" + base_save_name, watermark=watermark)
         plot_scatter('suns', 'Isc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$I_{sc}$ (A)",
                      *updated_dfs, labels=labels, save_name="eta_Isc" + base_save_name, watermark=watermark)
-        plot_scatter('suns', 'Jsc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$J_{sc} ($A \ cm^{-2}$)",
+        plot_scatter('suns', 'Jsc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$J_{sc}$ ($A \ cm^{-2}$)",
                      *updated_dfs, labels=labels, save_name="eta_Jsc" + base_save_name, watermark=watermark)
         plot_scatter('suns', 'fill_factor', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF",
                      *updated_dfs, labels=labels, save_name="eta_FF" + base_save_name, watermark=watermark)
         plot_scatter('suns', 'Voc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$V_{oc}$ (V)", *updated_dfs,
-                     log_x=True, labels=labels, xlims=(10, 100), save_name="eta_voc" + base_save_name, watermark=watermark)
+                     log_x=True, labels=labels, xlims=(100, 1000), save_name="eta_voc" + base_save_name, watermark=watermark)
     else:
         plot_lines('voltage', 'current', 'Voltage (V)',
                    'Current (A)', *updated_dfs, labels=labels)
