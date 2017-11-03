@@ -30,31 +30,34 @@ for color in mpl.rcParams['axes.prop_cycle']:
 def create_PV_dataframe(pkl_name,epi,filepath='DEFAULT',delimeter = ',',light=False,  dev_loc= "on_chip"):
     """Create dataframe of measurements in a filepath. If light measurements then light = True.
      Requires name of pickle to be defined and the epistructure"""
-    if filepath =='DEFAULT':
-        root = Tk()
-        root.update()
-        filepath = askdirectory()
-        root.destroy()
-    list_of_measurements_dfs=[]
-    for file in DataExtractor.list_files_by_type(filepath):
+    if not os.path.isfile(pkl_name):
+        if filepath =='DEFAULT':
+            root = Tk()
+            root.update()
+            filepath = askdirectory()
+            root.destroy()
+        list_of_measurements_dfs=[]
+        for file in DataExtractor.list_files_by_type(filepath):
 
-        try:
-            voltage, current_a = DataExtractor.data_split(file, delimiter=delimeter)
-            data = DataToDataFrame(voltage,current_a,file)
-            data.epi, data.dev_loc = epi, dev_loc
-            if light == False:
-                list_of_measurements_dfs.append(data.dark_data())
-            else:
-                list_of_measurements_dfs.append(data.light_data())
-        except Exception as e:
-            logging.warning(traceback.print_exc())
-            logging.warning("Error in dataframe with file {} in {} ".format(file, os.getcwd()))
-            pass
+            try:
+                voltage, current_a = DataExtractor.data_split(file, delimiter=delimeter)
+                data = DataToDataFrame(voltage,current_a,file)
+                data.epi, data.dev_loc = epi, dev_loc
+                if light == False:
+                    list_of_measurements_dfs.append(data.dark_data())
+                else:
+                    list_of_measurements_dfs.append(data.light_data())
+            except Exception as e:
+                logging.warning(traceback.print_exc())
+                logging.warning("Error in dataframe with file {} in {} ".format(file, os.getcwd()))
+                pass
 
-    master_df = pd.concat(list_of_measurements_dfs)
-    master_df.to_pickle(filepath+pkl_name)
-    master_df.to_csv(filepath+pkl_name[:-4] + ".csv" )
-    return master_df
+        master_df = pd.concat(list_of_measurements_dfs)
+        master_df.to_pickle(filepath+pkl_name)
+        master_df.to_csv(filepath+pkl_name[:-4] + ".csv" )
+        return master_df
+    else:
+        return pd.read_pickle(pkl_name)
 
 def saveTikzPng(filename, watermark=None, thesis = False, show=False):
     if watermark is not None:
