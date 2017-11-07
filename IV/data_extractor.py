@@ -25,14 +25,14 @@ colors = []
 for color in mpl.rcParams['axes.prop_cycle']:
     colors = colors + list(color.values())
 
-def create_PV_dataframe(pkl_name,epi,filepath=os.getcwd(),delimeter = ',',light=False,  dev_loc= "on_chip"):
+def create_PV_dataframe(pkl_name,epi,filepath=os.getcwd(),delimeter = ',',light=False,  dev_loc= "on_chip", force_analysis = False):
     """Create dataframe of measurements in a filepath. If light measurements then light = True.
      Requires name of pickle to be defined and the epistructure"""
     data_folder = os.path.join(filepath, 'data')
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
         print("Made new data Folder")
-    if not os.path.isfile(os.path.join(data_folder, pkl_name)):
+    if not os.path.isfile(os.path.join(data_folder, pkl_name)) or force_analysis==True :
         print("Pickle does not exist")
         list_of_measurements_dfs=[]
         for file in DataExtractor.list_files_by_type(filepath):
