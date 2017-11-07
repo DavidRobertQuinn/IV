@@ -1,11 +1,6 @@
 #! /usr/bin/env python
-
 import matplotlib.pyplot as plt
-import IV.data_extractor
-import matplotlib
-from matplotlib2tikz import save as tikz_save
-plt.style.use('thesis_full_width')
-
+from IV.data_extractor import colors, saveTikzPng
 
 
 def drop_dark_data(df):
@@ -37,7 +32,7 @@ def plot_scatter(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=No
     ax.set_xlim(xlims)
     ax.set_ylim(ylims)
     if save_name:
-        IV.data_extractor.saveTikzPng(save_name, watermark)
+        saveTikzPng(save_name, watermark)
 
 
 def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None, labels=None, xlims=None, ylims=None, save_name=None, watermark=None):
@@ -51,12 +46,12 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
         isc_min_list.append(min(df.Isc))
         jsc_min_list.append(min(df.Jsc))
         for index, row in df.iterrows():
-            plt.plot(row[x], row[y], color=IV.data_extractor.colors[count])
+            plt.plot(row[x], row[y], color=colors[count])
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     if labels:
         for count, label in enumerate(labels):
-            plt.plot([], [], IV.data_extractor.colors[count], label=label)
+            plt.plot([], [], colors[count], label=label)
         ax.legend()
     ax.set_xlim(0, 1.4)
     ax.set_ylim(min(isc_min_list) * 1.1, -0.2 * min(isc_min_list))
@@ -67,7 +62,7 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
     if log_y:
         ax.set_yscale('log')
     if save_name:
-        IV.data_extractor.saveTikzPng(save_name, watermark=watermark)
+        saveTikzPng(save_name, watermark=watermark)
 
 
 def full_analysis(*dfs, labels=None,  watermark=None, base_save_name=None,one_sun_x_lims= (100,1000) ):
