@@ -1,37 +1,34 @@
 #! /usr/bin/env python
-import os
 import glob
-import numpy as np
-import traceback
-import re
-from collections import namedtuple
-from matplotlib2tikz import save as tikz_save
-from scipy.constants import elementary_charge, Boltzmann as q, k
-from math import pi
-import matplotlib.pyplot as plt
 import logging
-import pandas as pd
+import os
+import re
 import sys
+import time
+import traceback
+from collections import namedtuple
+from math import pi
+
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from matplotlib2tikz import save as tikz_save
+from scipy.constants import Boltzmann as q
+from scipy.constants import elementary_charge, k
+from scipy.optimize import curve_fit
+
 desired_width = 320
 pd.set_option('display.width', desired_width)
-from scipy.optimize import curve_fit
-import time
-from tkinter import *
-from tkinter.filedialog import askdirectory
-
-
-
 
 colors = []
 for color in mpl.rcParams['axes.prop_cycle']:
     colors = colors + list(color.values())
 
-def create_PV_dataframe(pkl_name,epi,filepath='DEFAULT',delimeter = ',',light=False,  dev_loc= "on_chip"):
+def create_PV_dataframe(pkl_name,epi,filepath=os.getcwd(),delimeter = ',',light=False,  dev_loc= "on_chip"):
     """Create dataframe of measurements in a filepath. If light measurements then light = True.
      Requires name of pickle to be defined and the epistructure"""
     data_folder = os.path.join(filepath, 'data')
-    print(data_folder)
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
         print("Made new data Folder")
@@ -506,4 +503,3 @@ class DataToDataFrame(LightCalculations):
 
         df = pd.DataFrame(data, index=[index])
         return df
-

@@ -2,17 +2,14 @@
 import matplotlib.pyplot as plt
 from IV.data_extractor import colors, saveTikzPng
 
-
 def drop_dark_data(df):
     """Return dataframe in which the index does not contain the string 'dark' """
     s = df.index.str.contains("dark")
     return df[~s].copy()
 
-
 def add_suns(df):
     """adds intensity in suns columns to dataframe"""
     df['suns'] = df.int_opt_power / (df.area * .1)
-
 
 def plot_scatter(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None, labels=None, xlims=None, ylims=None, save_name=None, watermark=None):
     """Plots scatter plots of variables x and y from optional number of data frames"""
@@ -33,7 +30,6 @@ def plot_scatter(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=No
     ax.set_ylim(ylims)
     if save_name:
         saveTikzPng(save_name, watermark)
-
 
 def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None, labels=None, xlims=None, ylims=None, save_name=None, watermark=None):
     """Plots scatter plots of vraibles x and y from optional number of data frames"""
@@ -63,7 +59,6 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
         ax.set_yscale('log')
     if save_name:
         saveTikzPng(save_name, watermark=watermark)
-
 
 def full_analysis(*dfs, labels=None,  watermark=None, base_save_name=None,one_sun_x_lims= (100,1000) ):
     if labels == None:
