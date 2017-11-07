@@ -30,17 +30,15 @@ for color in mpl.rcParams['axes.prop_cycle']:
 def create_PV_dataframe(pkl_name,epi,filepath='DEFAULT',delimeter = ',',light=False,  dev_loc= "on_chip"):
     """Create dataframe of measurements in a filepath. If light measurements then light = True.
      Requires name of pickle to be defined and the epistructure"""
-    here =os.getcwd()
-    data_folder = os.path.join(here, 'data')
+    data_folder = os.path.join(filepath, 'data')
+    print(data_folder)
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
+        print("Made new data Folder")
     if not os.path.isfile(os.path.join(data_folder, pkl_name)):
-        if filepath =='DEFAULT':
-            root = Tk()
-            root.update()
-            filepath = askdirectory()
-            root.destroy()
+        print("Pickle does not exist")
         list_of_measurements_dfs=[]
         for file in DataExtractor.list_files_by_type(filepath):
-
             try:
                 voltage, current_a = DataExtractor.data_split(file, delimiter=delimeter)
                 data = DataToDataFrame(voltage,current_a,file)
@@ -53,14 +51,14 @@ def create_PV_dataframe(pkl_name,epi,filepath='DEFAULT',delimeter = ',',light=Fa
                 logging.warning(traceback.print_exc())
                 logging.warning("Error in dataframe with file {} in {} ".format(file, os.getcwd()))
                 pass
-        if not os.path.exists(data_folder):
-            os.makedirs(data_folder)
+       
         master_df = pd.concat(list_of_measurements_dfs)
         
-        master_df.to_pickle(filepath+r"/data/"+pkl_name)
-        master_df.to_csv(filepath+r"/data/"+pkl_name[:-4] + ".csv" )
+        master_df.to_pickle(filepath+"\\data\\"+pkl_name)
+        master_df.to_csv(filepath+"\\data\\"+pkl_name[:-4] + ".csv" )
         return master_df
     else:
+        print("Getting dataframe from data/pkl")
         return pd.read_pickle(os.path.join(data_folder, pkl_name))
 
 def saveTikzPng(filename, watermark=None, thesis = False, show=False):
@@ -132,12 +130,9 @@ class DataExtractor:
 
     @staticmethod
     def list_files_by_type(filepath, file_extension = 'dat'):
-        original_filepath = os.getcwd()
         os.chdir(filepath)
         string = "*."+file_extension
         files = [file for file in glob.glob(string) ]
-        
-        os.chdir(original_filepath)
         return files
 
 

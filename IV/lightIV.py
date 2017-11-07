@@ -1,14 +1,11 @@
 #! /usr/bin/env python
-from itertools import zip_longest
-import os
+
 import matplotlib.pyplot as plt
 import IV.data_extractor
 import matplotlib
 from matplotlib2tikz import save as tikz_save
 plt.style.use('thesis_full_width')
-# colors = []
-# for color in matplotlib.rcParams['axes.prop_cycle']:
-#     colors = colors + list(color.values())
+
 
 
 def drop_dark_data(df):
@@ -73,7 +70,9 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
         IV.data_extractor.saveTikzPng(save_name, watermark=watermark)
 
 
-def full_analysis(*dfs, labels=["df1", "df2"],  watermark=None, base_save_name=None):
+def full_analysis(*dfs, labels=None,  watermark=None, base_save_name=None,one_sun_x_lims= (100,1000) ):
+    if labels == None:
+        labels = [None]*len(dfs)
     updated_dfs = []
     for df in dfs:
         updated_df = drop_dark_data(df)
@@ -93,7 +92,7 @@ def full_analysis(*dfs, labels=["df1", "df2"],  watermark=None, base_save_name=N
         plot_scatter('suns', 'fill_factor', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF",
                      *updated_dfs, labels=labels, save_name="eta_FF" + base_save_name, watermark=watermark)
         plot_scatter('suns', 'Voc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$V_{oc}$ (V)", *updated_dfs,
-                     log_x=True, labels=labels, xlims=(100, 1000), save_name="eta_voc" + base_save_name, watermark=watermark)
+                     log_x=True, labels=labels, xlims=one_sun_x_lims, save_name="eta_voc" + base_save_name, watermark=watermark)
     else:
         plot_lines('voltage', 'current', 'Voltage (V)',
                    'Current (A)', *updated_dfs, labels=labels)
@@ -108,4 +107,4 @@ def full_analysis(*dfs, labels=["df1", "df2"],  watermark=None, base_save_name=N
         plot_scatter('suns', 'fill_factor',
                      "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF", *updated_dfs, labels=labels)
         plot_scatter('suns', 'Voc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)",
-                     "$V_{oc}$ (V)", *updated_dfs, xlims=(10, 100), log_x=True, labels=labels)
+                     "$V_{oc}$ (V)", *updated_dfs, xlims=one_sun_x_lims, log_x=True, labels=labels)
