@@ -70,19 +70,19 @@ def full_analysis(*dfs, labels=None,  watermark=None, base_save_name=None,one_su
         updated_dfs.append(updated_df)
     if base_save_name:
         plot_lines('voltage', 'current', 'Voltage (V)', 'Current (A)', *updated_dfs,
-                   labels=labels, save_name="IV" + base_save_name, watermark=watermark)
+                   labels=labels, save_name= base_save_name +"_v_i",  watermark=watermark)
         plot_lines('voltage', 'current_density', 'Voltage (V)',
                    'Current Density  ($A \ cm^{-2}$)', *updated_dfs, labels=labels, save_name="JV" + base_save_name, watermark=watermark)
         plot_scatter('suns', 'int_efficiency', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$\eta_{int}$",
-                     *updated_dfs, labels=labels, save_name="eta_suns" + base_save_name, watermark=watermark)
+                     *updated_dfs, labels=labels, save_name=base_save_name + "_suns_int_eta", watermark=watermark)
         plot_scatter('suns', 'Isc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$I_{sc}$ (A)",
-                     *updated_dfs, labels=labels, save_name="eta_Isc" + base_save_name, watermark=watermark)
+                     *updated_dfs, labels=labels, save_name= base_save_name +"_suns_Isc" +, watermark=watermark)
         plot_scatter('suns', 'Jsc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$J_{sc}$ ($A \ cm^{-2}$)",
-                     *updated_dfs, labels=labels, save_name="eta_Jsc" + base_save_name, watermark=watermark)
+                     *updated_dfs, labels=labels, save_name=base_save_name + "_suns_Jsc, watermark=watermark)
         plot_scatter('suns', 'fill_factor', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF",
-                     *updated_dfs, labels=labels, save_name="eta_FF" + base_save_name, watermark=watermark)
+                     *updated_dfs, labels=labels, save_name= base_save_name +"_suns_FF" +, watermark=watermark)
         plot_scatter('suns', 'Voc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$V_{oc}$ (V)", *updated_dfs,
-                     log_x=True, labels=labels, xlims=one_sun_x_lims, save_name="eta_voc" + base_save_name, watermark=watermark)
+                     log_x=True, labels=labels, xlims=one_sun_x_lims, save_name= base_save_name+"_suns_voc, watermark=watermark)
     else:
         plot_lines('voltage', 'current', 'Voltage (V)',
                    'Current (A)', *updated_dfs, labels=labels)
