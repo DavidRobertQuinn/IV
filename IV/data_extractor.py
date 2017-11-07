@@ -5,7 +5,7 @@ import os
 import re
 import traceback
 from collections import namedtuple
-from devices import *
+from IV.devices import *
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
