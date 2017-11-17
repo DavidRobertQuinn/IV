@@ -62,6 +62,9 @@ C7A1 = Device(name='C7A1', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_c
 C7A1I = Device(name='C7A1I', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi * .03, grid_coverage=0.011777,
                 grid_type='radial+spokes', shape="circle", info='ITO')
 
+C7A3 = Device(name='C7A3', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi * .03, grid_coverage=0.011777,
+                grid_type='inverted_square_thick_grid_n_contact', shape="circle", info='ITO')
+
 # S3A3 = Device(name='S3A3', area_cm=0.01**2, diameter_um=100, perimeter_cm=0.01*4, grid_coverage=0.011777,
 #               grid_type='inverse_square', shape="square", info='37um_grid_lines')
 ## Old Mask
@@ -104,7 +107,7 @@ devices = [
     C3A1, C3A2,
     S3A1, S3A2, S3A3, S3A21,
     C4A1, C4A2,
-    C6A1, C6A1F, C7A1, C7A1,
+    C6A1, C6A1F, C7A1, C7A1,C7A3,
     A4, A3, A2, A1, A1S, A0,
     B3, B2, B2F, B1S, B1, B0
         ]
