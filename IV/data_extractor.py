@@ -14,9 +14,6 @@ from scipy.constants import Boltzmann as q
 from scipy.constants import elementary_charge, k
 from scipy.optimize import curve_fit
 
-desired_width = 320
-pd.set_option('display.width', desired_width)
-
 colors = []
 for color in mpl.rcParams['axes.prop_cycle']:
     colors = colors + list(color.values())
