@@ -58,6 +58,8 @@ C6A1F = Device(name='C6A1F', area_cm=pi * 0.02 ** 2, diameter_um=400, perimeter_
             grid_type='full', shape="circle", info='bond_metal_over_edge')
 C7A1 = Device(name='C7A1', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi*.03, grid_coverage=0.011777,
             grid_type='radial+spokes', shape="circle", info='bond_metal_over_edge')
+C7A2 = Device(name='C7A2', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi*.03, grid_coverage=0.011777,
+            grid_type='radial+spokes', shape="circle", info='no_bond_metal_over_edge')
 
 C7A1I = Device(name='C7A1I', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi * .03, grid_coverage=0.011777,
                 grid_type='radial+spokes', shape="circle", info='ITO')
@@ -107,7 +109,7 @@ devices = [
     C3A1, C3A2,
     S3A1, S3A2, S3A3, S3A21,
     C4A1, C4A2,
-    C6A1, C6A1F, C7A1, C7A1,C7A3,
+    C6A1, C6A1F, C7A1, C7A2,C7A3,
     A4, A3, A2, A1, A1S, A0,
     B3, B2, B2F, B1S, B1, B0
         ]
