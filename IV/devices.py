@@ -43,7 +43,7 @@ S3A2 = Device(name='S3A2', area_cm=0.01 ** 2, diameter_um=100, perimeter_cm=0.01
 S3A21 = Device(name='S3A21', area_cm=0.01 ** 2, diameter_um=100, perimeter_cm=0.01 * 4, grid_coverage=0.035172,
                 grid_type='inverse_square', shape="square", info='45_degree_orientation')
 
-S3A3 = Device(name='S3A3', area_cm=0.01 ** 2, diameter_um=100, perimeter_cm=0.01 * 4, grid_coverage=0.8,
+S3A3 = Device(name='S3A3', area_cm=0.01 ** 2, diameter_um=100, perimeter_cm=0.01 * 4, grid_coverage=0.08,
                 grid_type='inverse_square', shape="square", info='37um_grid_lines')
 
 C4A1 = Device(name='C4A1', area_cm=pi * 0.0025 ** 2, diameter_um=50, perimeter_cm=pi * .005, grid_coverage=0.08,
@@ -56,7 +56,7 @@ C6A1 = Device(name='C6A1', area_cm=pi * 0.02 ** 2, diameter_um=400, perimeter_cm
             grid_type='inverted_square_50um', shape="circle", info='bond_metal_over_edge')
 C6A1F = Device(name='C6A1F', area_cm=pi * 0.02 ** 2, diameter_um=400, perimeter_cm=pi*.04, grid_coverage=1,
             grid_type='full', shape="circle", info='bond_metal_over_edge')
-C7A1 = Device(name='C7A1', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi*.03, grid_coverage=0.011777,
+C7A1 = Device(name='C7A1', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi*.03, grid_coverage=0.047,
             grid_type='radial+spokes', shape="circle", info='bond_metal_over_edge')
 C7A2 = Device(name='C7A2', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi*.03, grid_coverage=0.011777,
             grid_type='radial+spokes', shape="circle", info='no_bond_metal_over_edge')
@@ -65,6 +65,8 @@ C7A1I = Device(name='C7A1I', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter
                 grid_type='radial+spokes', shape="circle", info='ITO')
 
 C7A3 = Device(name='C7A3', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi * .03, grid_coverage=0.011777,
+                grid_type='inverted_square_thick_grid_n_contact', shape="circle", info='ITO')
+C7A4 = Device(name='C7A4', area_cm=pi * 0.015 ** 2, diameter_um=300, perimeter_cm=pi * .03, grid_coverage=0.011777,
                 grid_type='inverted_square_thick_grid_n_contact', shape="circle", info='ITO')
 
 # S3A3 = Device(name='S3A3', area_cm=0.01**2, diameter_um=100, perimeter_cm=0.01*4, grid_coverage=0.011777,
