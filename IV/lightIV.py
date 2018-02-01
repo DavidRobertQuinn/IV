@@ -26,15 +26,15 @@ def full_analysis(*dfs, labels=None,  watermark=None, base_save_name=None, one_s
                    labels=labels, save_name=base_save_name + "_v_i",  watermark=watermark)
         plot_lines('voltage', 'current_density', 'Voltage (V)',
                    'Current Density  ($A \ cm^{-2}$)', *updated_dfs, labels=labels, save_name="JV" + base_save_name, watermark=watermark)
-        plot_scatter('suns', 'int_efficiency', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$\eta_{int}$",
+        plot_scatter('suns', 'int_efficiency', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$\eta_{int}$",
                      *updated_dfs, labels=labels, save_name=base_save_name + "_suns_int_eta", watermark=watermark)
-        plot_scatter('suns', 'Isc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$I_{sc}$ (A)",
+        plot_scatter('suns', 'Isc', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$I_{sc}$ (A)",
                      *updated_dfs, labels=labels, save_name=base_save_name + "_suns_Isc", watermark=watermark)
-        plot_scatter('suns', 'Jsc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$J_{sc}$ ($A \ cm^{-2}$)",
+        plot_scatter('suns', 'Jsc', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$J_{sc}$ ($A \ cm^{-2}$)",
                      *updated_dfs, labels=labels, save_name=base_save_name + "_suns_Jsc", watermark=watermark)
-        plot_scatter('suns', 'fill_factor', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF",
+        plot_scatter('suns', 'fill_factor', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF",
                      *updated_dfs, labels=labels, save_name=base_save_name + "_suns_FF", watermark=watermark)
-        plot_scatter('suns', 'Voc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$V_{oc}$ (V)", *updated_dfs,
+        plot_scatter('suns', 'Voc', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$V_{oc}$ (V)", *updated_dfs,
                      log_x=True, labels=labels, xlims=one_sun_x_lims, save_name=base_save_name + "_suns_voc", watermark=watermark)
     else:
         plot_lines('voltage', 'current', 'Voltage (V)',
@@ -42,12 +42,12 @@ def full_analysis(*dfs, labels=None,  watermark=None, base_save_name=None, one_s
         plot_lines('voltage', 'current_density', 'Voltage (V)',
                    'Current Density  ($A \ cm^{-2}$)', *updated_dfs, labels=labels)
         plot_scatter('suns', 'int_efficiency',
-                     "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$\eta_{int}$", *updated_dfs, labels=labels)
+                     "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$\eta_{int}$", *updated_dfs, labels=labels)
         plot_scatter(
-            'suns', 'Isc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$I_{sc}$ (A)", *updated_dfs, labels=labels)
+            'suns', 'Isc', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$I_{sc}$ (A)", *updated_dfs, labels=labels)
         plot_scatter(
-            'suns', 'Jsc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$J_{sc}$ ($A \ cm^{-2}$)", *updated_dfs, labels=labels)
+            'suns', 'Jsc', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "$J_{sc}$ ($A \ cm^{-2}$)", *updated_dfs, labels=labels)
         plot_scatter('suns', 'fill_factor',
-                     "Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF", *updated_dfs, labels=labels)
-        plot_scatter('suns', 'Voc', "Power Density in Suns($0.1 \ W \ cm^{-2} $)",
+                     "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)", "FF", *updated_dfs, labels=labels)
+        plot_scatter('suns', 'Voc', "Internal Power Density in Suns($0.1 \ W \ cm^{-2} $)",
                      "$V_{oc}$ (V)", *updated_dfs, xlims=one_sun_x_lims, log_x=True, labels=labels)
