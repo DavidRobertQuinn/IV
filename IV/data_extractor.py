@@ -4,8 +4,7 @@ import logging
 import os
 import traceback
 from collections import namedtuple
-# from numpy import log as ln
-from IV.devices import *
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,6 +13,8 @@ from matplotlib2tikz import save as tikz_save
 from scipy.constants import Boltzmann as k
 from scipy.constants import elementary_charge as q
 from scipy.optimize import curve_fit
+
+from IV.devices import *
 
 colors = []
 for color in mpl.rcParams['axes.prop_cycle']:
@@ -81,6 +82,8 @@ def saveTikzPng(filename, watermark=None, thesis=False, show=False):
     else:
         plt.savefig(figure_folder + "/" + filename_pdf,
                     format='pdf', dpi=600, bbox_inches='tight')
+        plt.savefig(figure_folder + "/" + filename_png,
+                    format='png', dpi=600, bbox_inches='tight')         
     if show == True:
         plt.show()
 
@@ -139,11 +142,19 @@ class DeviceInfo:
     @property
     def incident_power_mw(self):
         try:
-            if 'mw' not in self.filename.lower():
-                return 0
-            else:
+            if 'mw'  in self.filename.lower():
                 before, after = self.filename.lower.split('P')
                 return float(after.split('m')[0])
+                
+            elif "ma" in self.filename.lower():
+                before, after = self.filename.lower.split('ma')
+                current = int(before[-3:)]
+                current_to_power_dict ={110:8.6,130:21.8, 150:34.7,170:47.8,190:60.9,210:74,230:87.2,100.2}
+                return current_to_power_dict.get(current, 0)
+            else:
+                return 0
+                
+            
         except ValueError:
             logging.warning(traceback.print_exc())
             logging.warning("Error in incident_power_mw with file {} in {} ".format(
