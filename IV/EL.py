@@ -13,11 +13,8 @@ def twoD_coloured_visualisation(image_file):
     image = scipy.misc.imread(image_file)
     gray_img = rgb2gray(image)
     fig, ax = plt.subplots(figsize=(6.4, 4.8))
-    # Set whitespace to 0
     fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
-    # Display the image
     ax.imshow(gray_img, extent=(0, 1, 1, 0))
-    # Turn off axes and set axes limits
     ax.axis('tight')
     ax.axis('off')
     figure_folder = os.path.join(parent_folder, 'figures')
@@ -31,7 +28,7 @@ def twoD_coloured_visualisation(image_file):
 
 
 def oneD_intensity_profile(image_file, x0, y0, x1, y1, num_of_coords_on_line=500, image_ticks=False,
-                           plot_ylabel=None, plot_ticks=True, save=False, show=False, figsize=None):
+                           plot_ylabel=None, plot_ticks=False, save=False, show=False, figsize=None):
     image = scipy.misc.imread(image_file)
     gray_img = rgb2gray(image)
     x, y = np.linspace(x0, x1, num_of_coords_on_line), np.linspace(
@@ -59,7 +56,7 @@ def oneD_intensity_profile(image_file, x0, y0, x1, y1, num_of_coords_on_line=500
         plt.savefig(str(image_file[:-4] + '1D_intensity_profile' +
                         '.pdf'), format='pdf', dpi=600, bbox_inches='tight')
     else:
-        return fig
+        return fig,axes
 
 
 def el_visualisation(image_file):
