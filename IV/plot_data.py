@@ -20,7 +20,7 @@ def plot_scatter(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=No
     ax.set_xlim(xlims)
     ax.set_ylim(ylims)
     if save_name:
-        saveTikzPng(save_name, watermark)
+        saveTikzPng(save_name, watermark, thesis=True)
 
 
 def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None, labels=None, xlims=None, ylims=None, save_name=None, watermark=None):
@@ -50,4 +50,4 @@ def plot_lines(x, y, xlabel, ylabel, *dfs, log_x=None, log_y=None, fig_size=None
     if log_y:
         ax.set_yscale('log')
     if save_name:
-        saveTikzPng(save_name, watermark=watermark)
+        saveTikzPng(save_name, watermark=watermark, thesis=True)

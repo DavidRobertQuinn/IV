@@ -53,8 +53,10 @@ def oneD_intensity_profile(image_file, x0, y0, x1, y1, num_of_coords_on_line=500
     if show:
         plt.show()
     if save:
-        plt.savefig(str(image_file[:-4] + '1D_intensity_profile' +
+        fig.savefig(str(image_file[:-4] + '_1D_intensity_profile' +
                         '.pdf'), format='pdf', dpi=600, bbox_inches='tight')
+        fig.savefig(str(image_file[:-4] + '_1D_intensity_profile' +
+                        '.png'), format='png', dpi=600, bbox_inches='tight')
     else:
         return fig,axes
 
@@ -66,7 +68,7 @@ def el_visualisation(image_file):
     xx, yy = np.mgrid[0:gray_img.shape[0], 0:gray_img.shape[1]]
     fig = plt.figure(figsize=(12, 9))
     ax = fig.gca(projection='3d')
-    label = image_file[:-4]
+    label = image_file[:-4] + "3D_Visualisation"
     ax.plot_surface(xx, yy, gray_img / np.max(gray_img),
                     rstride=1, cstride=1, cmap='viridis', linewidth=0)
     fake2Dline = mpl.lines.Line2D(
@@ -74,7 +76,10 @@ def el_visualisation(image_file):
     plt.axis('off')
     # ax.legend([fake2Dline], [label], numpoints = 1)
     ax.view_init(elev=90, azim=-90)
-    plt.savefig(label + '.png', format='png', dpi=600, bbox_inches='tight')
+    fig.savefig(label + '.png', format='png', dpi=600, bbox_inches='tight')
+    fig.savefig(label + '.pdf', format='pdf', dpi=600, bbox_inches='tight')
     ax.view_init(elev=75, azim=-45)
-    plt.savefig(str(label + 'angle' + '.png'),
+    fig.savefig(str(label + 'angle' + '.png'),
                 format='png', dpi=600, bbox_inches='tight')
+    fig.savefig(str(label + 'angle' + '.pdf),
+                format='pdf', dpi=600, bbox_inches='tight')

@@ -21,6 +21,97 @@ for color in mpl.rcParams['axes.prop_cycle']:
     colors = colors + list(color.values())
 
 
+
+def surface_recombination_plot(df, voltage, legend= False):
+    fig, ax = plt.subplots()
+    perimeter_area = []
+    surf_rec = []
+    for index, row in best_large_devices_surf_rec.iterrows():
+        perimeter_area.append(row.perimeter/row.area)
+        surf_rec.append(row.surf_rec[1])
+    a, b = np.polyfit(perimeter_area, surf_rec, 1)
+    x = np.array([0,1000])
+    ax.plot(x,a*x + b,"--", linewidth=2,zorder = -1,label = "Fit = a*x + b :\n a = " '{:.1e}'.format(a) +" b="+ '{:.1e}'.format(b) )
+    if legend:
+        ax.legend()
+    for index, row in best_large_devices_surf_rec.iterrows():
+        ax.scatter(row.perimeter/row.area, row.surf_rec[1],label ="$"+ index+"$", alpha = 1, color = data_extractor.colors[1])
+    # ax.set_yscale("log")
+    ax.set_ylim(0,1)
+    ax.set_xlim(0,1000)
+    # ax.legend()
+    ax.ticklabel_format(style="sci", axis="y", scilimits=(-2,2))
+    ax.set_xlabel("Perimeter/Area ($cm^{-1}$)")
+    ax.set_ylabel("Current Density ($cm^{-1}$)")
+    return fig, ax, (a, b)
+
+def J02_fit(df, parameters=True, legend= False):
+    fig, ax = plt.subplots()
+    J02s = []
+    perimeter_over_areas = []
+    for index, row in df.iterrows():
+        x = np.linspace(0.4,1,num=61)
+        popt, pcov = curve_fit(double_diode_model,x,row.current_density[140:201],p0=(1e-10,1e-12))
+        curve_y = double_diode_model(x, popt[0],popt[1])
+        J02s.append(popt[1])
+        perimeter_over_areas.append(row.perimeter/row.area)
+    ax.scatter(perimeter_over_areas, J02s)
+    ax.set_ylim(1e-11,0.4e-8)
+    J02_perimeter, J02_bulk = np.polyfit(perimeter_over_areas, J02s, 1)
+    x_values= np.array([0,800])
+    n_i = 2.1e6
+    S0LS = J02_perimeter/(q*n_i)
+    j02_bulk_string = "{0:.2e}".format(J02_bulk)
+    j02_perimeter_string = "{0:.2e}".format(J02_perimeter)
+    S0LS_string = "{0:.1f}".format(S0LS)
+    label = "Bulk $J_{02}$ = "+ j02_bulk_string+" $A \ cm^{-2}$"+"\n"+"Perimeter $J_{02}$ = "+j02_perimeter_string +" $A \ cm^{-2}$" + "\n" + "$S_0L_s$ = " + S0LS_string + " $cm^2 \ s^{-1}$"
+    # label = "J_{{02-bulk}} = \%.3E $A cm^{{-2}}$ - J_{{02-perimeter}} = \%.3E $A cm^{{-2}}$" %(J02_bulk, J02_perimeter)
+    ax.plot(x_values, J02_perimeter*x_values + J02_bulk,"--", label = label, color="gray",zorder=-1,)
+    if legend:
+        ax.legend()
+    n_i = 2.1e6
+    S0LS = J02_perimeter/(q*n_i)
+    if parameters:
+        return fig, ax, J02_perimeter, J02_bulk, S0LS
+    else:
+        return fig, ax
+    
+def double_diode_fit_plot(df, parameters=False):
+    fig, ax = plt.subplots()
+    if isinstance(df,pd.DataFrame):
+        for index, row in df.iterrows():
+            x = np.linspace(0.4,1,num=61)
+            popt, pcov = curve_fit(double_diode_model,x,row.current_density[140:201],p0=(1e-10,1e-12))
+            curve_y = double_diode_model(x, popt[0],popt[1])
+            ax.plot(df.voltage, df.current_density)
+            j01_string = "{0:.2e}".format(popt[0])
+            j02_string = "{0:.2e}".format(popt[1])
+            label = "$J_{01} = $" + j01_string +  " $A \ cm^{-2}$" +"\n"+ "$J_{02} = $" +j02_string+ " $A \ cm^{-2}$"
+            ax.plot(x, curve_y, '--', label = label)
+            ax.legend()
+            ax.set_xlabel("Voltage (V)")
+            ax.set_ylabel("Current Density ($A \ cm^{-2}$)")
+        if parameters:
+            return fig, ax, J02_perimeter, J02_bulk, S0LS
+        else:
+            return fig, ax
+    else:
+        x = np.linspace(0.4,1,num=61)
+        popt, pcov = curve_fit(double_diode_model,x,df.current_density[140:201],p0=(1e-10,1e-12))
+        curve_y = double_diode_model(x, popt[0],popt[1])
+        ax.plot(df.voltage[140:201], df.current_density[140:201])
+        j01_string = "{0:.2e}".format(popt[0])
+        j02_string = "{0:.2e}".format(popt[1])
+        label = "$J_{01} = $" + j01_string +  " $A \ cm^{-2}$" +"\n"+ "$J_{02} = $" +j02_string+ " $A \ cm^{-2}$"
+        ax.plot(x, curve_y, '--', label = label)
+        ax.legend()
+        ax.set_xlabel("Voltage (V)")
+        ax.set_ylabel("Current Density ($A \ cm^{-2}$)")
+        if parameters:
+            return fig, ax, J02_perimeter, J02_bulk, S0LS
+        else:
+            return fig, ax
+
 def create_PV_dataframe(pkl_name, epi, filepath=os.getcwd(), delimeter=',', light=False,  dev_loc="on_chip", force_analysis=False):
     """Create dataframe of measurements in a filepath. If light measurements then light = True.
      Requires name of pickle to be defined and the epistructure"""
@@ -62,8 +153,8 @@ def saveTikzPng(filename, watermark=None, thesis=False, show=False):
         plt.gcf().text(0.125, 0.9, watermark, fontsize=8)
     filename_png = filename + '.png'
     filename_pdf = filename + '.pdf'
-    plt.gcf()
-    plt.plot()
+    fig = plt.gcf()
+    # plt.plot()
     d = os.getcwd()
     figure_folder = os.path.join(d, 'figures')
     tex_folder = os.path.join(d, 'tex')
@@ -77,12 +168,12 @@ def saveTikzPng(filename, watermark=None, thesis=False, show=False):
         figurewidth='\\figurewidth'
     )
     if thesis == False:
-        plt.savefig(figure_folder + "/" + filename_png,
+        fig.savefig(figure_folder + "/" + filename_png,
                     format='png', dpi=600, bbox_inches='tight')
     else:
-        plt.savefig(figure_folder + "/" + filename_pdf,
+        fig.savefig(figure_folder + "/" + filename_pdf,
                     format='pdf', dpi=600, bbox_inches='tight')
-        plt.savefig(figure_folder + "/" + filename_png,
+        fig.savefig(figure_folder + "/" + filename_png,
                     format='png', dpi=600, bbox_inches='tight')         
     if show == True:
         plt.show()
@@ -143,13 +234,13 @@ class DeviceInfo:
     def incident_power_mw(self):
         try:
             if 'mw'  in self.filename.lower():
-                before, after = self.filename.lower.split('P')
+                before, after = self.filename.split('P')
                 return float(after.split('m')[0])
                 
             elif "ma" in self.filename.lower():
-                before, after = self.filename.lower.split('ma')
-                current = int(before[-3:)]
-                current_to_power_dict ={110:8.6,130:21.8, 150:34.7,170:47.8,190:60.9,210:74,230:87.2,100.2}
+                before, after = self.filename.split('ma')
+                current = int(before[-3:])
+                current_to_power_dict ={110:8.6,130:21.8, 150:34.7,170:47.8,190:60.9,210:74,230:87.2,250:100.2}
                 return current_to_power_dict.get(current, 0)
             else:
                 return 0
@@ -193,6 +284,8 @@ class DarkCalculations(DeviceInfo):
         DeviceInfo.__init__(self, filename)
         self.voltage = voltage
         self.current_a = current_a
+
+    
 
     @property
     def current_density(self):
@@ -243,13 +336,13 @@ class DarkCalculations(DeviceInfo):
 
     @property
     def surf_rec_current(self):
-        micro_current_values = []
+        current_densities= []
         voltages = [0.6, 0.8, 1]
         for v in voltages:
             index_of_closest_value = find_nearest(self.voltage, v)[0]
-            micro_current_values.append(
-                1000000 * self.current_a[index_of_closest_value])
-        return dict(zip(voltages, micro_current_values))
+            current_densities.append(
+                 self.current_density[index_of_closest_value])
+        return dict(zip(voltages,current_densities))
 
     def ideality_factor(self):
         T = 300
@@ -280,8 +373,9 @@ class LightCalculations(DarkCalculations):
         return max_value, max_index
 
     @property
-    def int_opt_power(self, photon_energy=1.534):
-        return -self.current_a[301] * photon_energy
+    def int_opt_power(self, photon_energy=1.534) :# 1.534
+        
+        return -self.current_a[1] * photon_energy
 
     @property
     def internal_efficiency(self):
